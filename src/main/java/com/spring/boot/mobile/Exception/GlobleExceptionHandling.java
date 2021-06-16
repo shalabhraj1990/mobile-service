@@ -22,6 +22,12 @@ public class GlobleExceptionHandling {
 		return getErrorDetails(ex,1000);
 	}
 	
+	@ExceptionHandler(value = MobileNotFoundException.class)
+	public ResponseEntity<ErrorDetails> handleMobileNotFoundException(MobileNotFoundException ex) {
+		ErrorDetails errorDetails = new ErrorDetails(1001, ex.getMessage(),null);
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorDetails);
+	}
+	
 	private ResponseEntity<ErrorDetails> getErrorDetails(Throwable ex,int errorCode) {
 		StringWriter stringWriter = new StringWriter();
 		PrintWriter printWriter = new PrintWriter(stringWriter);
