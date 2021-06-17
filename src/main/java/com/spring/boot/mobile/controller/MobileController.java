@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.spring.boot.mobile.data.LineOfBussiness;
+import com.spring.boot.mobile.data.Status;
 import com.spring.boot.mobile.entity.Mobile;
 import com.spring.boot.mobile.service.MobileServiceIml;
 
@@ -27,9 +29,14 @@ public class MobileController {
 	MobileServiceIml mobileServiceIml;
 
 	@GetMapping
-	public List<Mobile> getAllMobiles() {
+	public List<Mobile> getAllMobiles(@RequestParam(name = "name", required = false) String name,
+			@RequestParam(name = "price", required = false) Double price,
+			@RequestParam(name = "status", required = false) Status status,
+			@RequestParam(name = "lob", required = false) LineOfBussiness lob) {
 
-		return mobileServiceIml.getAllMobiles();
+		//return mobileServiceIml.getAllMobilesWithPalaceHolder(name, price, status, lob);
+		return mobileServiceIml.getAllMobilesWithNamedParameter(name, price, status, lob);
+
 	}
 
 	@GetMapping("/{mobile-id}")

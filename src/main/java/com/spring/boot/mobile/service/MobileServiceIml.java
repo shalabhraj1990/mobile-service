@@ -3,6 +3,7 @@ package com.spring.boot.mobile.service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import javax.print.attribute.standard.DateTimeAtCompleted;
@@ -11,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.spring.boot.mobile.Exception.MobileNotFoundException;
+import com.spring.boot.mobile.data.LineOfBussiness;
+import com.spring.boot.mobile.data.Status;
 import com.spring.boot.mobile.entity.Mobile;
 import com.spring.boot.mobile.repsitory.MobileRepository;
 
@@ -22,8 +25,15 @@ public class MobileServiceIml implements MobileService {
 	List<Mobile> mobiles = new ArrayList<Mobile>();
 
 	@Override
-	public List<Mobile> getAllMobiles() {
-		return mobileRepositoy.findAll();
+	public List<Mobile> getAllMobilesWithPalaceHolder(String name, Double price, Status status, LineOfBussiness lob) {
+		return mobileRepositoy.getJpqlCustomFilterWithPlaceHolderQuery(name, price, Objects.nonNull(status) ? status.getValue() : null,
+				Objects.nonNull(lob) ? lob.getValue() : null);
+	}
+	
+	@Override
+	public List<Mobile> getAllMobilesWithNamedParameter(String name, Double price, Status status, LineOfBussiness lob) {
+		return mobileRepositoy.getJpqlCustomFilterWithPlaceHolderQuery(name, price, Objects.nonNull(status) ? status.getValue() : null,
+				Objects.nonNull(lob) ? lob.getValue() : null);
 	}
 
 	@Override
@@ -43,7 +53,7 @@ public class MobileServiceIml implements MobileService {
 //		if (!mobiles.contains(mobile)) {
 //			mobiles.add(mobile);
 //		}
-		return getAllMobiles();
+		return mobileRepositoy.findAll();
 	}
 
 	@Override
