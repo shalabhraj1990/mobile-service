@@ -6,9 +6,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import javax.print.attribute.standard.DateTimeAtCompleted;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.spring.boot.mobile.Exception.MobileNotFoundException;
@@ -25,15 +30,65 @@ public class MobileServiceIml implements MobileService {
 	List<Mobile> mobiles = new ArrayList<Mobile>();
 
 	@Override
-	public List<Mobile> getAllMobilesWithPalaceHolder(String name, Double price, Status status, LineOfBussiness lob) {
-		return mobileRepositoy.getJpqlCustomFilterWithPlaceHolderQuery(name, price, Objects.nonNull(status) ? status.getValue() : null,
-				Objects.nonNull(lob) ? lob.getValue() : null);
+	public List<Mobile> getAllMobilesWithPalaceHolderQuery(String name, Double price, Status status,
+			LineOfBussiness lob) {
+		return mobileRepositoy.getJpqlCustomFilterWithPlaceHolderQuery(name, price,
+				Objects.nonNull(status) ? status.getValue() : null, Objects.nonNull(lob) ? lob.getValue() : null);
 	}
-	
+
 	@Override
-	public List<Mobile> getAllMobilesWithNamedParameter(String name, Double price, Status status, LineOfBussiness lob) {
-		return mobileRepositoy.getJpqlCustomFilterWithPlaceHolderQuery(name, price, Objects.nonNull(status) ? status.getValue() : null,
-				Objects.nonNull(lob) ? lob.getValue() : null);
+	public List<Mobile> getAllMobilesWithNamedParameterQuery(String name, Double price, Status status,
+			LineOfBussiness lob) {
+		return mobileRepositoy.getJpqlCustomFilterWithPlaceHolderQuery(name, price,
+				Objects.nonNull(status) ? status.getValue() : null, Objects.nonNull(lob) ? lob.getValue() : null);
+	}
+
+	@Override
+	public List<Mobile> getAllMobilesSpecificationQuery(String name, Double price, Status status, LineOfBussiness lob) {
+		Specification<Mobile> nameFilter = new Specification<Mobile>() {
+
+			@Override
+			public Predicate toPredicate(Root<Mobile> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+				// TODO Auto-generated method stub
+				if (org.apache.commons.lang3.StringUtils.isEmpty(name))
+					return null;
+				return criteriaBuilder.equal(root.get("name"), name);
+			}
+		};
+
+		Specification<Mobile> priceFilter = new Specification<Mobile>() {
+
+			@Override
+			public Predicate toPredicate(Root<Mobile> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+				// TODO Auto-generated method stub
+				if (Objects.isNull(price))
+					return null;
+				return criteriaBuilder.equal(root.get("price"), price);
+			}
+		};
+		Specification<Mobile> lobFilter = new Specification<Mobile>() {
+
+			@Override
+			public Predicate toPredicate(Root<Mobile> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+				// TODO Auto-generated method stub
+				if (null == lob)
+					return null;
+				return criteriaBuilder.equal(root.get("lineOfBussiness"), lob);
+
+			}
+		};
+
+		Specification<Mobile> statusFilter = new Specification<Mobile>() {
+
+			@Override
+			public Predicate toPredicate(Root<Mobile> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
+				// TODO Auto-generated method stub
+				if (null == status)
+					return null;
+				return criteriaBuilder.equal(root.get("status"), status);
+			}
+		};
+		return mobileRepositoy.findAll(nameFilter.and(priceFilter).and(lobFilter).and(statusFilter));
 	}
 
 	@Override

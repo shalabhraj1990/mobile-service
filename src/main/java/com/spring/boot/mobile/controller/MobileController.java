@@ -35,7 +35,7 @@ public class MobileController {
 			@RequestParam(name = "lob", required = false) LineOfBussiness lob) {
 
 		//return mobileServiceIml.getAllMobilesWithPalaceHolder(name, price, status, lob);
-		return mobileServiceIml.getAllMobilesWithNamedParameter(name, price, status, lob);
+		return mobileServiceIml.getAllMobilesSpecificationQuery(name, price, status, lob);
 
 	}
 

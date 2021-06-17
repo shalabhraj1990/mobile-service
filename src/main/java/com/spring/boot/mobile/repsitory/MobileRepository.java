@@ -3,13 +3,14 @@ package com.spring.boot.mobile.repsitory;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
 import com.spring.boot.mobile.data.LineOfBussiness;
 import com.spring.boot.mobile.data.Status;
 import com.spring.boot.mobile.entity.Mobile;
 
-public interface MobileRepository extends JpaRepository<Mobile, Integer> {
+public interface MobileRepository extends JpaRepository<Mobile, Integer>,JpaSpecificationExecutor<Mobile> {
 	List<Mobile> getByName(String name);
 
 	List<Mobile> getByPrice(Double price);
