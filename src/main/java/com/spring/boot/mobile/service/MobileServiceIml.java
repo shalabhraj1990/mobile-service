@@ -17,8 +17,9 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.spring.boot.mobile.Exception.MobileNotFoundException;
-import com.spring.boot.mobile.data.LineOfBussiness;
-import com.spring.boot.mobile.data.Status;
+import com.spring.boot.mobile.dto.FilterDto;
+import com.spring.boot.mobile.dto.LineOfBussiness;
+import com.spring.boot.mobile.dto.Status;
 import com.spring.boot.mobile.entity.Mobile;
 import com.spring.boot.mobile.repsitory.MobileRepository;
 
@@ -44,51 +45,35 @@ public class MobileServiceIml implements MobileService {
 	}
 
 	@Override
-	public List<Mobile> getAllMobilesSpecificationQuery(String name, Double price, Status status, LineOfBussiness lob) {
-		Specification<Mobile> nameFilter = new Specification<Mobile>() {
+	public List<Mobile> getAllMobilesSpecificationQuery(FilterDto filterDto) {
+//		Specification<Mobile> nameFilter = createFilter("name",filterDto.getName());
+//		Specification<Mobile> priceFilter = createFilter("price",filterDto.getPrice());
+//		Specification<Mobile> lobFilter = createFilter("lineOfBussiness",filterDto.getLob());
+//		Specification<Mobile> statusFilter = createFilter("status",filterDto.getStatus());
+//		
+		Specification<Mobile> filter = createFilter("name", filterDto.getName())
+				.and(createFilter("price", filterDto.getPrice()))
+				.and(createFilter("lineOfBussiness", filterDto.getLob()))
+				.and(createFilter("status", filterDto.getStatus()));
+
+		return mobileRepositoy.findAll(filter);
+	}
+
+	private Specification<Mobile> createFilter(String propertyName, Object value) {
+		return new Specification<Mobile>() {
 
 			@Override
 			public Predicate toPredicate(Root<Mobile> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-				// TODO Auto-generated method stub
-				if (org.apache.commons.lang3.StringUtils.isEmpty(name))
+				if (null == value)
 					return null;
-				return criteriaBuilder.equal(root.get("name"), name);
+				if (value instanceof String && StringUtils.isEmpty((String) value))
+					return null;
+				if("price".equalsIgnoreCase(propertyName))
+					return criteriaBuilder.le(root.get(propertyName),(Number) value);
+
+				return criteriaBuilder.equal(root.get(propertyName), value);
 			}
 		};
-
-		Specification<Mobile> priceFilter = new Specification<Mobile>() {
-
-			@Override
-			public Predicate toPredicate(Root<Mobile> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-				// TODO Auto-generated method stub
-				if (Objects.isNull(price))
-					return null;
-				return criteriaBuilder.equal(root.get("price"), price);
-			}
-		};
-		Specification<Mobile> lobFilter = new Specification<Mobile>() {
-
-			@Override
-			public Predicate toPredicate(Root<Mobile> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-				// TODO Auto-generated method stub
-				if (null == lob)
-					return null;
-				return criteriaBuilder.equal(root.get("lineOfBussiness"), lob);
-
-			}
-		};
-
-		Specification<Mobile> statusFilter = new Specification<Mobile>() {
-
-			@Override
-			public Predicate toPredicate(Root<Mobile> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-				// TODO Auto-generated method stub
-				if (null == status)
-					return null;
-				return criteriaBuilder.equal(root.get("status"), status);
-			}
-		};
-		return mobileRepositoy.findAll(nameFilter.and(priceFilter).and(lobFilter).and(statusFilter));
 	}
 
 	@Override

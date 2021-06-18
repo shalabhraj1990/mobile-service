@@ -1,4 +1,4 @@
-package com.spring.boot.mobile.data;
+package com.spring.boot.mobile.dto;
 
 //public class Mobile {
 //

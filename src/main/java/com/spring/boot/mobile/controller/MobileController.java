@@ -16,8 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.spring.boot.mobile.data.LineOfBussiness;
-import com.spring.boot.mobile.data.Status;
+import com.spring.boot.mobile.dto.FilterDto;
+import com.spring.boot.mobile.dto.LineOfBussiness;
+import com.spring.boot.mobile.dto.Status;
 import com.spring.boot.mobile.entity.Mobile;
 import com.spring.boot.mobile.service.MobileServiceIml;
 
@@ -28,14 +29,17 @@ public class MobileController {
 	@Autowired
 	MobileServiceIml mobileServiceIml;
 
-	@GetMapping
-	public List<Mobile> getAllMobiles(@RequestParam(name = "name", required = false) String name,
-			@RequestParam(name = "price", required = false) Double price,
-			@RequestParam(name = "status", required = false) Status status,
-			@RequestParam(name = "lob", required = false) LineOfBussiness lob) {
+//	@GetMapping
+//	public List<Mobile> getAllMobiles(@RequestParam(name = "name", required = false) String name,
+//			@RequestParam(name = "price", required = false) Double price,
+//			@RequestParam(name = "status", required = false) Status status,
+//			@RequestParam(name = "lob", required = false) LineOfBussiness lob) {
 
-		//return mobileServiceIml.getAllMobilesWithPalaceHolder(name, price, status, lob);
-		return mobileServiceIml.getAllMobilesSpecificationQuery(name, price, status, lob);
+	// return mobileServiceIml.getAllMobilesWithPalaceHolder(name, price, status,
+	// lob);
+	@GetMapping
+	public List<Mobile> getAllMobiles(FilterDto filterDto) {
+		return mobileServiceIml.getAllMobilesSpecificationQuery(filterDto);
 
 	}
 

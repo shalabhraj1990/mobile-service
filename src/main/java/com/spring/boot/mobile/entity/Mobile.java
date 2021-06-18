@@ -8,8 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
-import com.spring.boot.mobile.data.LineOfBussiness;
-import com.spring.boot.mobile.data.Status;
+import com.spring.boot.mobile.dto.LineOfBussiness;
+import com.spring.boot.mobile.dto.Status;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

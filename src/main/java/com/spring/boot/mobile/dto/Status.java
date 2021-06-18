@@ -1,4 +1,4 @@
-package com.spring.boot.mobile.data;
+package com.spring.boot.mobile.dto;
 
 public enum Status {
 	AVAILABLE(0), NOTAVAILABLE(1);
