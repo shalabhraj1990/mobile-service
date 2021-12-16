@@ -5,11 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.transaction.Transactional;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +22,8 @@ import org.springframework.stereotype.Service;
 import com.spring.boot.mobile.Exception.MobileNotFoundException;
 import com.spring.boot.mobile.dto.FilterDto;
 import com.spring.boot.mobile.dto.LineOfBussiness;
+import com.spring.boot.mobile.dto.MobileDto;
+import com.spring.boot.mobile.dto.SaveMobileDto;
 import com.spring.boot.mobile.dto.Status;
 import com.spring.boot.mobile.entity.Mobile;
 import com.spring.boot.mobile.repsitory.MobileRepository;
@@ -31,21 +36,23 @@ public class MobileServiceIml implements MobileService {
 	List<Mobile> mobiles = new ArrayList<Mobile>();
 
 	@Override
-	public List<Mobile> getAllMobilesWithPalaceHolderQuery(String name, Double price, Status status,
+	public List<MobileDto> getAllMobilesWithPalaceHolderQuery(String name, Double price, Status status,
 			LineOfBussiness lob) {
 		return mobileRepositoy.getJpqlCustomFilterWithPlaceHolderQuery(name, price,
-				Objects.nonNull(status) ? status.getValue() : null, Objects.nonNull(lob) ? lob.getValue() : null);
+				Objects.nonNull(status) ? status.getValue() : null, Objects.nonNull(lob) ? lob.getValue() : null)
+				.stream().map(entity -> entityToDto(entity)).collect(Collectors.toList()); 
 	}
 
 	@Override
-	public List<Mobile> getAllMobilesWithNamedParameterQuery(String name, Double price, Status status,
+	public List<MobileDto> getAllMobilesWithNamedParameterQuery(String name, Double price, Status status,
 			LineOfBussiness lob) {
 		return mobileRepositoy.getJpqlCustomFilterWithPlaceHolderQuery(name, price,
-				Objects.nonNull(status) ? status.getValue() : null, Objects.nonNull(lob) ? lob.getValue() : null);
+				Objects.nonNull(status) ? status.getValue() : null, Objects.nonNull(lob) ? lob.getValue() : null)
+				.stream().map(entity -> entityToDto(entity)).collect(Collectors.toList());
 	}
 
 	@Override
-	public List<Mobile> getAllMobilesSpecificationQuery(FilterDto filterDto) {
+	public List<MobileDto> getAllMobilesSpecificationQuery(FilterDto filterDto) {
 //		Specification<Mobile> nameFilter = createFilter("name",filterDto.getName());
 //		Specification<Mobile> priceFilter = createFilter("price",filterDto.getPrice());
 //		Specification<Mobile> lobFilter = createFilter("lineOfBussiness",filterDto.getLob());
@@ -56,7 +63,7 @@ public class MobileServiceIml implements MobileService {
 				.and(createFilter("lineOfBussiness", filterDto.getLob()))
 				.and(createFilter("status", filterDto.getStatus()));
 
-		return mobileRepositoy.findAll(filter);
+		return mobileRepositoy.findAll(filter).stream().map(entity -> entityToDto(entity)).collect(Collectors.toList());
 	}
 
 	private Specification<Mobile> createFilter(String propertyName, Object value) {
@@ -68,8 +75,8 @@ public class MobileServiceIml implements MobileService {
 					return null;
 				if (value instanceof String && StringUtils.isEmpty((String) value))
 					return null;
-				if("price".equalsIgnoreCase(propertyName))
-					return criteriaBuilder.le(root.get(propertyName),(Number) value);
+				if ("price".equalsIgnoreCase(propertyName))
+					return criteriaBuilder.le(root.get(propertyName), (Number) value);
 
 				return criteriaBuilder.equal(root.get(propertyName), value);
 			}
@@ -77,27 +84,34 @@ public class MobileServiceIml implements MobileService {
 	}
 
 	@Override
-	public Mobile getMobileById(int mobileId) {
+	public MobileDto getMobileById(int mobileId) {
 
 		// Optional<Mobile> mobile = mobiles.stream().filter(x -> x.getId() ==
 		// mobileId).findFirst();
 		Optional<Mobile> mobile = mobileRepositoy.findById(mobileId);
 		mobile.orElseThrow(() -> new MobileNotFoundException("mobile id not found !!!!"));
-		return mobile.get();
+		return entityToDto(mobile.get());
 	}
 
 	@Override
-	public List<Mobile> saveMobile(Mobile mobile) {
-		mobile.setPublicationDate(LocalDate.now());
-		mobileRepositoy.save(mobile);
+	@Transactional
+	public List<MobileDto> saveMobile(SaveMobileDto mobile) {
+		Mobile mobEntity = Mobile.builder().name(mobile.getName()).countryCode(mobile.getCountryCode())
+				.publicationDate(LocalDate.now()).status(Status.valueOf(mobile.getStatus()))
+				.lineOfBussiness(LineOfBussiness.valueOf(mobile.getLineOfBussiness()))
+				.accessoryType(StringUtils.isNotEmpty(mobile.getAccessoryType()) ? mobile.getAccessoryType() : "ALL")
+				.price(mobile.getPrice())
+				.build();
+
+		mobileRepositoy.save(mobEntity);
 //		if (!mobiles.contains(mobile)) {
 //			mobiles.add(mobile);
 //		}
-		return mobileRepositoy.findAll();
+		return mobileRepositoy.findAll().stream().map(entity -> entityToDto(entity)).collect(Collectors.toList());
 	}
 
 	@Override
-	public Mobile updateMobile(Mobile mobile, int mobileId) {
+	public MobileDto updateMobile(Mobile mobile, int mobileId) {
 //		Mobile mobileFound = getMobileById(mobileId);
 //		int index = mobiles.indexOf(mobileFound);
 //		mobiles.set(index, mobile);
@@ -106,7 +120,7 @@ public class MobileServiceIml implements MobileService {
 		mobile.setId(mobileId);
 		mobile.setPublicationDate(LocalDate.now());
 		mobileRepositoy.save(mobile);
-		return mobile;
+		return entityToDto(mobile);
 	}
 
 	@Override
@@ -118,15 +132,31 @@ public class MobileServiceIml implements MobileService {
 
 	}
 
-	public List<Mobile> getMobileByName(String name) {
+	public List<MobileDto> getMobileByName(String name) {
 		// TODO Auto-generated method stub
-		return mobileRepositoy.getByName(name);
+		return mobileRepositoy.getByName(name).stream().map(entity -> entityToDto(entity)).collect(Collectors.toList());
 	}
 
 	@Override
-	public List<Mobile> getMobileByPrice(Double price) {
+	public List<MobileDto> getMobileByPrice(Double price) {
 		// TODO Auto-generated method stub
-		return mobileRepositoy.getByPrice(price);
+		return mobileRepositoy.getByPrice(price).stream().map(entity -> entityToDto(entity))
+				.collect(Collectors.toList());
+	}
+
+	private Mobile DtoToEntity(MobileDto mobileDto) {
+		return Mobile.builder().id(mobileDto.getId()).accessoryType(mobileDto.getAccessoryType())
+				.countryCode(mobileDto.getCountryCode())
+				.lineOfBussiness(LineOfBussiness.valueOf(mobileDto.getLineOfBussiness())).name(mobileDto.getName())
+				.price(mobileDto.getPrice()).publicationDate(mobileDto.getPublicationDate())
+				.status(Status.valueOf(mobileDto.getStatus())).build();
+	}
+
+	private MobileDto entityToDto(Mobile mobile) {
+		return MobileDto.builder().id(mobile.getId()).accessoryType(mobile.getAccessoryType())
+				.countryCode(mobile.getCountryCode()).lineOfBussiness(String.valueOf(mobile.getLineOfBussiness()))
+				.name(mobile.getName()).price(null != mobile.getPrice() ?mobile.getPrice() :0).publicationDate(mobile.getPublicationDate())
+				.status(String.valueOf(mobile.getStatus())).build();
 	}
 
 //	@PostConstruct

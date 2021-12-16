@@ -1,4 +1,4 @@
-package com.spring.boot.mobile.Exception;
+ package com.spring.boot.mobile.Exception;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;

@@ -6,27 +6,29 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import com.spring.boot.mobile.dto.FilterDto;
 import com.spring.boot.mobile.dto.LineOfBussiness;
+import com.spring.boot.mobile.dto.MobileDto;
+import com.spring.boot.mobile.dto.SaveMobileDto;
 import com.spring.boot.mobile.dto.Status;
 import com.spring.boot.mobile.entity.Mobile;
 
 public interface MobileService {
-	public List<Mobile> getAllMobilesWithPalaceHolderQuery(String name, Double price, Status status,
+	public List<MobileDto> getAllMobilesWithPalaceHolderQuery(String name, Double price, Status status,
 			LineOfBussiness lob);
 
-	public List<Mobile> getAllMobilesWithNamedParameterQuery(String name, Double price, Status status,
+	public List<MobileDto> getAllMobilesWithNamedParameterQuery(String name, Double price, Status status,
 			LineOfBussiness lob);
 
-	public List<Mobile> getAllMobilesSpecificationQuery(FilterDto filterDto);
+	public List<MobileDto> getAllMobilesSpecificationQuery(FilterDto filterDto);
 
-	public Mobile getMobileById(int mobileId);
+	public MobileDto getMobileById(int mobileId);
 
-	public List<Mobile> saveMobile(Mobile mobile);
+	public List<MobileDto> saveMobile(SaveMobileDto mobile);
 
-	public Mobile updateMobile(Mobile mobile, int mobileId);
+	public MobileDto updateMobile(Mobile mobile, int mobileId);
 
 	public void deleteMobile(@PathVariable("mobile-id") int id);
 
-	public List<Mobile> getMobileByName(String name);
+	public List<MobileDto> getMobileByName(String name);
 
-	public List<Mobile> getMobileByPrice(Double price);
+	public List<MobileDto> getMobileByPrice(Double price);
 }

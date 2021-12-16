@@ -3,6 +3,7 @@ package com.spring.boot.mobile.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -15,4 +16,8 @@ public class OpenApiConfiguration {
 		return new OpenAPI().components(new Components())
 				.info(new Info().title("mobile-servic").description("Open API 3 contract"));
 	}
+//	@Bean
+//	public LocalValidatorFactoryBean  validator() {
+//		return new LocalValidatorFactoryBean();
+//	}
 }
