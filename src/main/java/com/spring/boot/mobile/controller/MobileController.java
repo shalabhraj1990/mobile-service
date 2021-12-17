@@ -23,6 +23,7 @@ import com.spring.boot.mobile.dto.MobileDto;
 import com.spring.boot.mobile.dto.SaveMobileDto;
 import com.spring.boot.mobile.entity.Mobile;
 import com.spring.boot.mobile.service.MobileServiceIml;
+import com.spring.boot.mobile.utils.MobileUtilities;
 
 @RestController
 @RequestMapping("/mobile")
@@ -30,7 +31,8 @@ public class MobileController {
 
 	@Autowired
 	MobileServiceIml mobileServiceIml;
-
+	@Autowired
+	MobileUtilities mobileUtilities;
 //	@GetMapping
 //	public List<Mobile> getAllMobiles(@RequestParam(name = "name", required = false) String name,
 //			@RequestParam(name = "price", required = false) Double price,
@@ -65,8 +67,8 @@ public class MobileController {
 
 	@PostMapping
 	@ResponseStatus(value = HttpStatus.CREATED)
-	public List<MobileDto> saveMobile( @RequestBody @Valid SaveMobileDto mobile) {
-		mobile.validateSaveMobileDto();
+	public List<MobileDto> saveMobile(@RequestBody @Valid SaveMobileDto mobile) {
+		mobileUtilities.validateSaveMobileDto(mobile);
 		return mobileServiceIml.saveMobile(mobile);
 
 	}

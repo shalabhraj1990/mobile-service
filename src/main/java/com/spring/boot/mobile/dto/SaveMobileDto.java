@@ -35,22 +35,22 @@ public class SaveMobileDto {
 	private String status;
 
 //This method can be moved to util class
-	public void validateSaveMobileDto() {
-		List<ErrorDetails> errors = new ArrayList<>();
-		try {
-			Status.valueOf(this.status);
-		} catch (IllegalArgumentException e) {
-			errors.add(ErrorDetails.builder().code(2001).message("invalid Status value").build());
-		}
-		try {
-			LineOfBussiness.valueOf(this.lineOfBussiness);
-		} catch (IllegalArgumentException e) {
-			errors.add(ErrorDetails.builder().code(2001).message("invalid LineOfBussiness value").build());
-		}
-
-		if (!CollectionUtils.isEmpty(errors)) {
-			throw new InvalidInputException("Request is invalid", errors);
-		}
-	}
+//	public void validateSaveMobileDto() {
+//		List<ErrorDetails> errors = new ArrayList<>();
+//		try {
+//			Status.valueOf(this.status);
+//		} catch (IllegalArgumentException e) {
+//			errors.add(ErrorDetails.builder().code(2001).message("invalid Status value").build());
+//		}
+//		try {
+//			LineOfBussiness.valueOf(this.lineOfBussiness);
+//		} catch (IllegalArgumentException e) {
+//			errors.add(ErrorDetails.builder().code(2001).message("invalid LineOfBussiness value").build());
+//		}
+//
+//		if (!CollectionUtils.isEmpty(errors)) {
+//			throw new InvalidInputException("Request is invalid", errors);
+//		}
+//	}
 
 }
