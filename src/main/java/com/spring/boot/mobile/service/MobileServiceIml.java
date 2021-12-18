@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -20,13 +19,14 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.spring.boot.mobile.Exception.MobileNotFoundException;
-import com.spring.boot.mobile.dto.FilterDto;
-import com.spring.boot.mobile.dto.LineOfBussiness;
-import com.spring.boot.mobile.dto.MobileDto;
-import com.spring.boot.mobile.dto.SaveMobileDto;
-import com.spring.boot.mobile.dto.Status;
-import com.spring.boot.mobile.entity.Mobile;
 import com.spring.boot.mobile.repsitory.MobileRepository;
+
+import msk.spring.boot.common.mobile.dto.FilterDto;
+import msk.spring.boot.common.mobile.dto.LineOfBussiness;
+import msk.spring.boot.common.mobile.dto.MobileDto;
+import msk.spring.boot.common.mobile.dto.SaveMobileDto;
+import msk.spring.boot.common.mobile.dto.Status;
+import msk.spring.boot.common.mobile.entity.Mobile;
 
 @Service
 public class MobileServiceIml implements MobileService {

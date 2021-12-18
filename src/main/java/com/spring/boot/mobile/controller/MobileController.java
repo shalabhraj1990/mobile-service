@@ -18,12 +18,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.spring.boot.mobile.dto.FilterDto;
-import com.spring.boot.mobile.dto.MobileDto;
-import com.spring.boot.mobile.dto.SaveMobileDto;
-import com.spring.boot.mobile.entity.Mobile;
 import com.spring.boot.mobile.service.MobileServiceIml;
 import com.spring.boot.mobile.utils.MobileUtilities;
+
+import msk.spring.boot.common.mobile.dto.FilterDto;
+import msk.spring.boot.common.mobile.dto.MobileDto;
+import msk.spring.boot.common.mobile.dto.SaveMobileDto;
+import msk.spring.boot.common.mobile.entity.Mobile;
 
 @RestController
 @RequestMapping("/mobile")

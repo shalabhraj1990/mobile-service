@@ -6,9 +6,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
-import com.spring.boot.mobile.dto.LineOfBussiness;
-import com.spring.boot.mobile.dto.Status;
-import com.spring.boot.mobile.entity.Mobile;
+import msk.spring.boot.common.mobile.dto.LineOfBussiness;
+import msk.spring.boot.common.mobile.dto.Status;
+import msk.spring.boot.common.mobile.entity.Mobile;
+
+
 
 public interface MobileRepository extends JpaRepository<Mobile, Integer>,JpaSpecificationExecutor<Mobile> {
 	List<Mobile> getByName(String name);

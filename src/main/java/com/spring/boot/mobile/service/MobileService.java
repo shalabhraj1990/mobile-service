@@ -4,12 +4,14 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.PathVariable;
 
-import com.spring.boot.mobile.dto.FilterDto;
-import com.spring.boot.mobile.dto.LineOfBussiness;
-import com.spring.boot.mobile.dto.MobileDto;
-import com.spring.boot.mobile.dto.SaveMobileDto;
-import com.spring.boot.mobile.dto.Status;
-import com.spring.boot.mobile.entity.Mobile;
+import msk.spring.boot.common.mobile.dto.FilterDto;
+import msk.spring.boot.common.mobile.dto.LineOfBussiness;
+import msk.spring.boot.common.mobile.dto.MobileDto;
+import msk.spring.boot.common.mobile.dto.SaveMobileDto;
+import msk.spring.boot.common.mobile.dto.Status;
+import msk.spring.boot.common.mobile.entity.Mobile;
+
+
 
 public interface MobileService {
 	public List<MobileDto> getAllMobilesWithPalaceHolderQuery(String name, Double price, Status status,

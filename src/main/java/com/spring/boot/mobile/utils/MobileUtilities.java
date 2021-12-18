@@ -8,9 +8,10 @@ import org.springframework.util.CollectionUtils;
 
 import com.spring.boot.mobile.Exception.ErrorDetails;
 import com.spring.boot.mobile.Exception.InvalidInputException;
-import com.spring.boot.mobile.dto.LineOfBussiness;
-import com.spring.boot.mobile.dto.SaveMobileDto;
-import com.spring.boot.mobile.dto.Status;
+
+import msk.spring.boot.common.mobile.dto.LineOfBussiness;
+import msk.spring.boot.common.mobile.dto.SaveMobileDto;
+import msk.spring.boot.common.mobile.dto.Status;
 
 @Component
 public class MobileUtilities {

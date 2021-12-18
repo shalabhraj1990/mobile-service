@@ -4,19 +4,17 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.5.0</version>
-		<relativePath /> <!-- lookup parent from repository -->
+		<groupId>msk.spring.boot.parent</groupId>
+		<artifactId>msk-parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../msk-parent/pom.xml</relativePath>
 	</parent>
 	<groupId>com.spring.boot</groupId>
 	<artifactId>mobile-service</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>${parent.version}</version>
 	<name>mobile-service</name>
 	<description>Mobile service to get mobile data</description>
-	<properties>
-		<java.version>11</java.version>
-	</properties>
+
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -29,51 +27,14 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>2.9.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springdoc</groupId>
-			<artifactId>springdoc-openapi-ui</artifactId>
-			<version>1.5.9</version>
-		</dependency>
-		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 			<scope>runtime</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-devtools</artifactId>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<scope>provided</scope>
-		</dependency>
 
-		<dependency>
-			<groupId>org.hibernate.validator</groupId>
-			<artifactId>hibernate-validator</artifactId>
-
-		</dependency>
 
 	</dependencies>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
+
 
 </project>
