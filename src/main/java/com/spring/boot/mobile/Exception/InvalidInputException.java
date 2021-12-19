@@ -2,6 +2,8 @@ package com.spring.boot.mobile.Exception;
 
 import java.util.List;
 
+import msk.spring.boot.common.dto.ErrorDetails;
+
 @SuppressWarnings("serial")
 public class InvalidInputException extends RuntimeException {
 	// To handle the single enum error

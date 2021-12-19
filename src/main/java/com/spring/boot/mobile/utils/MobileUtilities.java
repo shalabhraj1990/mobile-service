@@ -6,9 +6,9 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
-import com.spring.boot.mobile.Exception.ErrorDetails;
 import com.spring.boot.mobile.Exception.InvalidInputException;
 
+import msk.spring.boot.common.dto.ErrorDetails;
 import msk.spring.boot.common.mobile.dto.LineOfBussiness;
 import msk.spring.boot.common.mobile.dto.SaveMobileDto;
 import msk.spring.boot.common.mobile.dto.Status;
