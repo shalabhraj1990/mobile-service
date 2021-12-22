@@ -16,8 +16,13 @@ public class LogExecutionTimeAspect {
 	public void logExecutionTimeAllMethodPointCut() {
 
 	}
+	
+	@Pointcut(value = "@annotation(com.spring.boot.mobile.annotations.LogExecutionTime)")
+	public void logOnlyAnnotatedMethod() {
 
-	@Around(value = "logExecutionTimeAllMethodPointCut()")
+	}
+
+	@Around(value = "logOnlyAnnotatedMethod()")
 	public Object logExecutionTimeAspect(ProceedingJoinPoint joinPoint) throws Throwable {
 		long startTime = System.currentTimeMillis();
 		Object returnVal = null;
@@ -29,7 +34,7 @@ public class LogExecutionTimeAspect {
 			throw e;
 		}
 
-		log.warn("Tota execution time for  " + joinPoint.getSignature().toShortString() + "in mills"
+		log.warn("Tota execution time for  " + joinPoint.getSignature().toShortString() + "in mills = "
 				+ (System.currentTimeMillis() - startTime));
 		return returnVal;
 	}

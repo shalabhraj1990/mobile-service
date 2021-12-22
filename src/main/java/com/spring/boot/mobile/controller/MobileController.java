@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.spring.boot.mobile.annotations.LogExecutionTime;
 import com.spring.boot.mobile.service.MobileServiceIml;
 import com.spring.boot.mobile.utils.MobileUtilities;
 
@@ -43,30 +44,35 @@ public class MobileController {
 
 	// return mobileServiceIml.getAllMobilesWithPalaceHolder(name, price, status,
 	// lob);
+	@LogExecutionTime
 	@GetMapping
 	public Response<List<MobileDto>> getAllMobiles(FilterDto filterDto) {
 		return mobileServiceIml.getAllMobilesSpecificationQuery(filterDto);
 
 	}
 
+	@LogExecutionTime
 	@GetMapping("/{mobile-id}")
 	public Response<MobileDto> getMobileById(@PathVariable("mobile-id") int mobileId) {
 		return mobileServiceIml.getMobileById(mobileId);
 
 	}
 
+	@LogExecutionTime
 	@GetMapping("/byName")
 	public Response<List<MobileDto>> getMobileByName(@RequestParam("name") String name) {
 		return mobileServiceIml.getMobileByName(name);
 
 	}
 
+	@LogExecutionTime
 	@GetMapping("/byPrice")
 	public Response<List<MobileDto>> getMobileByName(@RequestParam("price") long price) {
 		return mobileServiceIml.getMobileByPrice(Double.valueOf(price));
 
 	}
 
+	@LogExecutionTime
 	@PostMapping
 	@ResponseStatus(value = HttpStatus.CREATED)
 	public Response<List<MobileDto>> saveMobile(@RequestBody @Valid SaveMobileDto mobile) {
@@ -75,11 +81,14 @@ public class MobileController {
 
 	}
 
+	@LogExecutionTime
 	@PutMapping("/{mobile-id}")
-	public ResponseEntity<Response<MobileDto>> updateMobile(@RequestBody Mobile mobile, @PathVariable("mobile-id") int mobileId) {
+	public ResponseEntity<Response<MobileDto>> updateMobile(@RequestBody Mobile mobile,
+			@PathVariable("mobile-id") int mobileId) {
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(mobileServiceIml.updateMobile(mobile, mobileId));
 	}
 
+	@LogExecutionTime
 	@DeleteMapping("{mobile-id}")
 	@ResponseStatus(value = HttpStatus.ACCEPTED)
 	public Response<Void> deleteMobile(@PathVariable("mobile-id") int id) {
