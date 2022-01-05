@@ -1,6 +1,7 @@
 package com.spring.boot.mobile.controller;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.validation.Valid;
 
@@ -21,7 +22,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.spring.boot.mobile.annotations.LogExecutionTime;
 import com.spring.boot.mobile.service.MobileServiceIml;
 import com.spring.boot.mobile.utils.MobileUtilities;
+import com.spring.boot.mobile.utils.ThreadLocalUtil;
 
+import lombok.extern.slf4j.Slf4j;
 import msk.spring.boot.common.dto.Response;
 import msk.spring.boot.common.mobile.dto.FilterDto;
 import msk.spring.boot.common.mobile.dto.MobileDto;
@@ -30,12 +33,15 @@ import msk.spring.boot.common.mobile.entity.Mobile;
 
 @RestController
 @RequestMapping("/mobile")
+@Slf4j
 public class MobileController {
 
 	@Autowired
 	MobileServiceIml mobileServiceIml;
 	@Autowired
 	MobileUtilities mobileUtilities;
+	@Autowired
+	ThreadLocalUtil threadLocalUtil;
 //	@GetMapping
 //	public List<Mobile> getAllMobiles(@RequestParam(name = "name", required = false) String name,
 //			@RequestParam(name = "price", required = false) Double price,
@@ -54,8 +60,20 @@ public class MobileController {
 	@LogExecutionTime
 	@GetMapping("/{mobile-id}")
 	public Response<MobileDto> getMobileById(@PathVariable("mobile-id") int mobileId) {
-		return mobileServiceIml.getMobileById(mobileId);
+		// localThread Demo
+		threadLocalUtil.setThreadLocal(String.valueOf(mobileId));
+		log.info("Thread name :" + Thread.currentThread().getName() + "mobileId :" + mobileId);
+		try {
+			TimeUnit.SECONDS.sleep(5);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		Response<MobileDto> res = mobileServiceIml.getMobileById(mobileId);
+		log.info("Thread name :" + Thread.currentThread().getName() + "mobileId :" + threadLocalUtil.getThreadLocal());
+		return res;
 
+		// return mobileServiceIml.getMobileById(mobileId);
 	}
 
 	@LogExecutionTime
