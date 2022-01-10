@@ -32,7 +32,7 @@ import msk.spring.boot.common.mobile.dto.SaveMobileDto;
 import msk.spring.boot.common.mobile.entity.Mobile;
 
 @RestController
-@RequestMapping("/mobile")
+@RequestMapping("/mobiles")
 @Slf4j
 public class MobileController {
 
