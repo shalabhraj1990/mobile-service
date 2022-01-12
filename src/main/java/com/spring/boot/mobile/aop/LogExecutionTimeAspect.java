@@ -16,7 +16,7 @@ public class LogExecutionTimeAspect {
 	public void logExecutionTimeAllMethodPointCut() {
 
 	}
-	
+
 	@Pointcut(value = "@annotation(com.spring.boot.mobile.annotations.LogExecutionTime)")
 	public void logOnlyAnnotatedMethod() {
 

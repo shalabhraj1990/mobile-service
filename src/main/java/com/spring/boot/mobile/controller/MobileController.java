@@ -52,14 +52,15 @@ public class MobileController {
 	// lob);
 	@LogExecutionTime
 	@GetMapping
-	public Response<List<MobileDto>> getAllMobiles(FilterDto filterDto) {
-		return mobileServiceIml.getAllMobilesSpecificationQuery(filterDto);
+	public ResponseEntity<Response<List<MobileDto>>> getAllMobiles(FilterDto filterDto) {
+		return ResponseEntity.status(HttpStatus.ACCEPTED)
+				.body(mobileServiceIml.getAllMobilesSpecificationQuery(filterDto));
 
 	}
 
 	@LogExecutionTime
 	@GetMapping("/{mobile-id}")
-	public Response<MobileDto> getMobileById(@PathVariable("mobile-id") int mobileId) {
+	public ResponseEntity<Response<MobileDto>> getMobileById(@PathVariable("mobile-id") int mobileId) {
 		// localThread Demo
 		threadLocalUtil.setThreadLocal(String.valueOf(mobileId));
 		log.info("Thread name :" + Thread.currentThread().getName() + "mobileId :" + mobileId);
@@ -71,31 +72,32 @@ public class MobileController {
 		}
 		Response<MobileDto> res = mobileServiceIml.getMobileById(mobileId);
 		log.info("Thread name :" + Thread.currentThread().getName() + "mobileId :" + threadLocalUtil.getThreadLocal());
-		return res;
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(res);
 
 		// return mobileServiceIml.getMobileById(mobileId);
 	}
 
 	@LogExecutionTime
 	@GetMapping("/byName")
-	public Response<List<MobileDto>> getMobileByName(@RequestParam("name") String name) {
-		return mobileServiceIml.getMobileByName(name);
+	public ResponseEntity<Response<List<MobileDto>>> getMobileByName(@RequestParam("name") String name) {
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(mobileServiceIml.getMobileByName(name));
 
 	}
 
 	@LogExecutionTime
 	@GetMapping("/byPrice")
-	public Response<List<MobileDto>> getMobileByName(@RequestParam("price") long price) {
-		return mobileServiceIml.getMobileByPrice(Double.valueOf(price));
+	public ResponseEntity<Response<List<MobileDto>>> getMobileByName(@RequestParam("price") long price) {
+		return ResponseEntity.status(HttpStatus.ACCEPTED)
+				.body(mobileServiceIml.getMobileByPrice(Double.valueOf(price)));
 
 	}
 
 	@LogExecutionTime
 	@PostMapping
 	@ResponseStatus(value = HttpStatus.CREATED)
-	public Response<List<MobileDto>> saveMobile(@RequestBody @Valid SaveMobileDto mobile) {
+	public ResponseEntity<Response<List<MobileDto>>> saveMobile(@RequestBody @Valid SaveMobileDto mobile) {
 		mobileUtilities.validateSaveMobileDto(mobile);
-		return mobileServiceIml.saveMobile(mobile);
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(mobileServiceIml.saveMobile(mobile));
 
 	}
 
@@ -109,8 +111,8 @@ public class MobileController {
 	@LogExecutionTime
 	@DeleteMapping("{mobile-id}")
 	@ResponseStatus(value = HttpStatus.ACCEPTED)
-	public Response<Void> deleteMobile(@PathVariable("mobile-id") int id) {
-		return mobileServiceIml.deleteMobile(id);
+	public ResponseEntity<Response<Void>> deleteMobile(@PathVariable("mobile-id") int id) {
+		return ResponseEntity.status(HttpStatus.ACCEPTED).body(mobileServiceIml.deleteMobile(id));
 	}
 
 }
