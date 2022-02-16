@@ -64,12 +64,12 @@ public class MobileController {
 		// localThread Demo
 		threadLocalUtil.setThreadLocal(String.valueOf(mobileId));
 		log.info("Thread name :" + Thread.currentThread().getName() + "mobileId :" + mobileId);
-		try {
-			TimeUnit.SECONDS.sleep(5);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		try {
+//			TimeUnit.SECONDS.sleep(5);
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		Response<MobileDto> res = mobileServiceIml.getMobileById(mobileId);
 		log.info("Thread name :" + Thread.currentThread().getName() + "mobileId :" + threadLocalUtil.getThreadLocal());
 		return ResponseEntity.status(HttpStatus.ACCEPTED).body(res);
