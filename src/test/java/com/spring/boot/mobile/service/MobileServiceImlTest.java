@@ -1,5 +1,6 @@
 package com.spring.boot.mobile.service;
 
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
@@ -17,6 +18,7 @@ import com.spring.boot.mobile.repsitory.MobileRepository;
 import msk.spring.boot.common.dto.Response;
 import msk.spring.boot.common.mobile.dto.LineOfBussiness;
 import msk.spring.boot.common.mobile.dto.MobileDto;
+import msk.spring.boot.common.mobile.dto.SaveMobileDto;
 import msk.spring.boot.common.mobile.dto.Status;
 import msk.spring.boot.common.mobile.entity.Mobile;
 
@@ -42,16 +44,29 @@ public class MobileServiceImlTest {
 		when(mobileRepositoy.findById(1)).thenReturn(null);
 		Assertions.assertThrows(NullPointerException.class, () -> mobileService.getMobileById(1));
 	}
-	
+
 	@Test
 	public void testGetMobileByIdWhenDbReturnEmptyOptional() {
 		when(mobileRepositoy.findById(1)).thenReturn(Optional.empty());
-		Assertions.assertThrows(MobileNotFoundException.class, () -> mobileService.getMobileById(1));
+		Exception ex = Assertions.assertThrows(MobileNotFoundException.class, () -> mobileService.getMobileById(1));
+		Assertions.assertEquals("mobile id not found !!!!", ex.getMessage());
+	}
+	
+	@Test
+	public void testSaveMobileVoid() {
+		mobileService.saveMobile(mockSaveMobileDto());
+		verify(mobileRepositoy).save(mockOptionalMobile().get());
+	}
+
+	private SaveMobileDto mockSaveMobileDto() {
+		// TODO Auto-generated method stub
+		return SaveMobileDto.builder().name("Motorola").accessoryType("ALL").countryCode("USA").price(10000.0).status(String.valueOf(Status.AVAILABLE)  )
+				.lineOfBussiness(String.valueOf(LineOfBussiness.ONLINE)).build();
 	}
 
 	private Optional<Mobile> mockOptionalMobile() {
 		return Optional
-				.of(Mobile.builder().id(1).name("Motorola").countryCode("USA").price(10000.0).status(Status.AVAILABLE)
+				.of(Mobile.builder().name("Motorola").countryCode("USA").price(10000.0).status(Status.AVAILABLE)
 						.lineOfBussiness(LineOfBussiness.ONLINE).publicationDate(LocalDate.now()).build());
 	}
 }

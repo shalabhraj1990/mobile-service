@@ -34,4 +34,6 @@ public interface MobileService {
 	public Response<List<MobileDto>> getMobileByName(String name);
 
 	public Response<List<MobileDto>> getMobileByPrice(Double price);
+
+	void saveMobileVoid(SaveMobileDto mobile);
 }

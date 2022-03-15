@@ -116,6 +116,18 @@ public class MobileServiceIml implements MobileService {
 		return Response.<List<MobileDto>>builder().data(mobiles).build();
 	}
 
+	@Transactional
+	public void saveMobileVoid(SaveMobileDto mobile) {
+		Mobile mobEntity = Mobile.builder().name(mobile.getName()).countryCode(mobile.getCountryCode())
+				.publicationDate(LocalDate.now()).status(Status.valueOf(mobile.getStatus()))
+				.lineOfBussiness(LineOfBussiness.valueOf(mobile.getLineOfBussiness()))
+				.accessoryType(StringUtils.isNotEmpty(mobile.getAccessoryType()) ? mobile.getAccessoryType() : "ALL")
+				.price(mobile.getPrice()).build();
+
+		mobileRepositoy.save(mobEntity);
+
+	}
+
 	@Override
 	public Response<MobileDto> updateMobile(Mobile mobile, int mobileId) {
 //		Mobile mobileFound = getMobileById(mobileId);
