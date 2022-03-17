@@ -31,7 +31,7 @@ public class MobileServiceImlTest {
 
 	@Test
 	public void testGetMobileById() {
-		when(mobileRepositoy.findById(1)).thenReturn(mockOptionalMobile());
+		when(mobileRepositoy.findById(1)).thenReturn(mockOptionalMobileByID());
 		Response<MobileDto> reponse = mobileService.getMobileById(1);
 		Assertions.assertNotNull(reponse);
 		Assertions.assertNotNull(reponse.getData());
@@ -66,7 +66,12 @@ public class MobileServiceImlTest {
 
 	private Optional<Mobile> mockOptionalMobile() {
 		return Optional
-				.of(Mobile.builder().name("Motorola").countryCode("USA").price(10000.0).status(Status.AVAILABLE)
+				.of(Mobile.builder().name("Motorola").accessoryType("ALL").countryCode("USA").price(10000.0).status(Status.AVAILABLE)
+						.lineOfBussiness(LineOfBussiness.ONLINE).publicationDate(LocalDate.now()).build());
+	}
+	private Optional<Mobile> mockOptionalMobileByID() {
+		return Optional
+				.of(Mobile.builder().id(1).name("Motorola").countryCode("USA").price(10000.0).status(Status.AVAILABLE)
 						.lineOfBussiness(LineOfBussiness.ONLINE).publicationDate(LocalDate.now()).build());
 	}
 }
